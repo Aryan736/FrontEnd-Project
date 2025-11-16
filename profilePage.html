@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcoQuest • Profile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+
+<body class="bg-gray-900 text-gray-100 font-sans min-h-screen">
+
+  <!-- HEADER -->
+  <header class="h-16 flex items-center justify-between px-6 bg-gray-800 border-b border-gray-700">
+    <div class="flex items-center gap-4">
+		<a href="index.html" class="text-gray-300 hover:text-green-400 hover:bg-gray-500/30 px-2 py-1 rounded-full">
+			<i class="fa-solid fa-arrow-left text-xl"></i>
+		</a>
+		<h2 class="text-2xl font-semibold">Profile</h2>
+	</div>
+    <div class="flex items-center gap-4">
+      <button class="text-gray-400 hover:text-white"><i class="fa-solid fa-bell"></i></button>
+      <img id="profile_avatar_nav" src="https://via.placeholder.com/40" class="w-8 h-8 rounded-full border-2 border-green-500" />
+    </div>
+  </header>
+
+  <main class="p-6 max-w-5xl mx-auto space-y-8">
+
+    <!-- PROFILE OVERVIEW -->
+    <section class="bg-gray-800 p-6 rounded-2xl border border-gray-700 flex flex-col md:flex-row items-center md:items-start gap-6">
+      <img id="profile_avatar_main" src="https://via.placeholder.com/100" class="w-28 h-28 rounded-full border-4 border-green-500 shadow-md" />
+      <div class="flex-1">
+        <h3 id="profile_name" class="text-3xl font-bold">Ash • Eco Warrior</h3>
+        <p id="profile_tagline" class="text-gray-400 mt-1">Student | Environmental Enthusiast | Level 5</p>
+
+        <div class="mt-4 w-full bg-gray-700 rounded-full h-3">
+          <div class="bg-gradient-to-r from-green-400 to-lime-400 h-3 rounded-full" style="width:36%"></div>
+        </div>
+        <p class="text-gray-400 text-sm mt-1">XP: 180 / 500</p>
+      </div>
+
+      <button id="editProfileBtn" class="px-6 py-3 bg-green-600 rounded-xl font-semibold hover:bg-green-500">
+        Edit Profile
+      </button>
+    </section>
+
+    <!-- BADGES -->
+    <section>
+      <h3 class="text-2xl font-semibold mb-4">Your Badges</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div class="bg-gray-800 p-4 rounded-xl border border-gray-700 flex flex-col items-center">
+          <i class="fa-solid fa-leaf text-5xl text-green-400"></i>
+          <span class="mt-2 text-gray-300 font-medium">Green Starter</span>
+        </div>
+        <div class="bg-gray-800 p-4 rounded-xl border border-gray-700 flex flex-col items-center">
+          <i class="fa-solid fa-recycle text-5xl text-blue-400"></i>
+          <span class="mt-2 text-gray-300 font-medium">Recycle Champ</span>
+        </div>
+        <div class="bg-gray-800 p-4 rounded-xl border border-gray-700 flex flex-col items-center">
+          <i class="fa-solid fa-solar-panel text-5xl text-yellow-400"></i>
+          <span class="mt-2 text-gray-300 font-medium">Solar Scholar</span>
+        </div>
+        <div class="bg-gray-800 p-4 rounded-xl border border-gray-700 flex flex-col items-center opacity-40">
+          <i class="fa-solid fa-lock text-5xl text-gray-600"></i>
+          <span class="mt-2 text-gray-500 font-medium">Locked</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACTIVITY HISTORY -->
+    <section>
+      <h3 class="text-2xl font-semibold mb-4">Recent Activity</h3>
+      <div class="space-y-4">
+        <div class="bg-gray-800 p-4 rounded-xl border border-gray-700 flex items-center justify-between">
+          <div>
+            <h4 class="font-semibold">Completed: Plastic-Free Week</h4>
+            <p class="text-gray-400 text-sm">Mission • 2 days ago</p>
+          </div>
+          <i class="fa-solid fa-check-circle text-green-400 text-2xl"></i>
+        </div>
+        <div class="bg-gray-800 p-4 rounded-xl border border-gray-700 flex items-center justify-between">
+          <div>
+            <h4 class="font-semibold">Lesson: Carbon Footprints</h4>
+            <p class="text-gray-400 text-sm">Learning Module • 5 days ago</p>
+          </div>
+          <i class="fa-solid fa-graduation-cap text-yellow-400 text-2xl"></i>
+        </div>
+        <div class="bg-gray-800 p-4 rounded-xl border border-gray-700 flex items-center justify-between">
+          <div>
+            <h4 class="font-semibold">Completed: Tree Plantation</h4>
+            <p class="text-gray-400 text-sm">Mission • 1 week ago</p>
+          </div>
+          <i class="fa-solid fa-tree text-green-500 text-2xl"></i>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================= -->
+  <!--       EDIT MODAL HTML     -->
+  <!-- ========================= -->
+  <div id="editProfileModal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
+    <div class="bg-[#0f172a] p-6 rounded-2xl border border-gray-700 w-96">
+      
+      <h3 class="text-xl font-semibold text-white mb-4">Edit Profile</h3>
+
+      <label class="text-gray-300">Display Name</label>
+      <input id="ep_name" class="w-full p-3 rounded-lg bg-[#1e293b] border border-gray-600 text-white mb-3" />
+
+      <label class="text-gray-300">Tagline</label>
+      <input id="ep_tag" class="w-full p-3 rounded-lg bg-[#1e293b] border border-gray-600 text-white mb-3" />
+
+      <label class="text-gray-300">Avatar URL</label>
+      <input id="ep_avatar" class="w-full p-3 rounded-lg bg-[#1e293b] border border-gray-600 text-white" />
+
+      <!-- PREVIEW -->
+      <img id="avatar_preview" 
+           class="w-24 h-24 rounded-full object-cover mt-4 border border-gray-600 mx-auto" />
+
+      <div class="flex justify-end gap-3 mt-5">
+        <button id="cancelModal" class="bg-gray-600 px-4 py-2 rounded-lg text-white">Cancel</button>
+        <button id="saveModal" class="bg-green-600 px-4 py-2 rounded-lg text-white">Save</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toastContainer" class="fixed bottom-5 right-5 space-y-2 z-50"></div>
+
+  <!-- ========================= -->
+  <!--       JAVASCRIPT          -->
+  <!-- ========================= -->
+
+<script>
+(() => {
+  const PROFILE_KEY = "ecoquest_profile_v1";
+
+  const defaultProfile = {
+    name: "Ash • Eco Warrior",
+    tagline: "Student | Environmental Enthusiast | Level 5",
+    avatar: "https://via.placeholder.com/100",
+  };
+
+  function loadProfile() {
+    const raw = localStorage.getItem(PROFILE_KEY);
+    return raw ? JSON.parse(raw) : { ...defaultProfile };
+  }
+
+  function saveProfile(data) {
+    localStorage.setItem(PROFILE_KEY, JSON.stringify(data));
+  }
+
+  let profile = loadProfile();
+
+  // Apply profile to page
+  function applyProfile() {
+    document.getElementById("profile_name").textContent = profile.name;
+    document.getElementById("profile_tagline").textContent = profile.tagline;
+	const navPic = document.getElementById("profile_avatar_nav");
+	if (navPic) navPic.src = profile.avatar;
+
+	const mainPic = document.getElementById("profile_avatar_main");
+	if (mainPic) mainPic.src = profile.avatar;
+
+  }
+
+  applyProfile();
+
+  // Toast function
+  function showToast(msg) {
+    const container = document.getElementById("toastContainer");
+    const toast = document.createElement("div");
+
+    toast.className = "bg-green-600 text-white px-4 py-2 rounded-lg shadow";
+    toast.textContent = msg;
+    toast.style.opacity = "0";
+    toast.style.transition = "opacity .3s";
+
+    container.appendChild(toast);
+
+    setTimeout(() => (toast.style.opacity = "1"), 20);
+    setTimeout(() => {
+      toast.style.opacity = "0";
+      setTimeout(() => toast.remove(), 300);
+    }, 2000);
+  }
+
+  // Modal controls
+  const modal = document.getElementById("editProfileModal");
+  const openBtn = document.getElementById("editProfileBtn");
+  const cancelBtn = document.getElementById("cancelModal");
+  const saveBtn = document.getElementById("saveModal");
+
+  const nameInput = document.getElementById("ep_name");
+  const tagInput = document.getElementById("ep_tag");
+  const avatarInput = document.getElementById("ep_avatar");
+  const avatarPreview = document.getElementById("avatar_preview");
+
+  openBtn.addEventListener("click", () => {
+    nameInput.value = profile.name;
+    tagInput.value = profile.tagline;
+    avatarInput.value = profile.avatar;
+    avatarPreview.src = profile.avatar;
+
+    modal.classList.remove("hidden");
+  });
+
+  cancelBtn.addEventListener("click", () => {
+    modal.classList.add("hidden");
+  });
+
+  avatarInput.addEventListener("input", () => {
+    avatarPreview.src = avatarInput.value;
+  });
+
+  saveBtn.addEventListener("click", () => {
+    profile.name = nameInput.value.trim();
+    profile.tagline = tagInput.value.trim();
+    profile.avatar = avatarInput.value.trim();
+
+    saveProfile(profile);
+    applyProfile();
+
+    modal.classList.add("hidden");
+    showToast("Profile Updated Successfully!");
+  });
+
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>EcoQuest • Lesson — Carbon Footprints</title>
+
+  <!-- Tailwind + Font Awesome -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+  <style>
+    /* card transitions */
+    .card-enter { transform: translateY(10px); opacity: 0; }
+    .card-enter-active { transform: translateY(0); opacity: 1; transition: all .25s ease-out; }
+
+    .card-exit-active { transform: translateY(-10px); opacity: 0; transition: all .18s ease-in; }
+
+    /* toast */
+    .toast { opacity: 0; transform: translateY(10px); transition: all .25s ease; }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    /* confetti */
+    .confetti { position: fixed; inset: 0; pointer-events:none; z-index:9999; }
+  </style>
+
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans">
+
+  <!-- Thin progress top bar -->
+  <div class="h-1 bg-gray-800">
+    <div id="topProgress" class="h-1 bg-gradient-to-r from-green-400 to-lime-300" style="width:0%"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="h-16 flex items-center justify-between px-6 bg-gray-900 border-b border-gray-800">
+    <div class="flex items-center gap-4">
+      <a href="index.html" class="p-2 rounded-lg hover:bg-gray-800">
+        <i class="fa-solid fa-arrow-left text-lg text-gray-200"></i>
+      </a>
+
+      <div>
+        <p class="text-xs text-green-300 font-semibold">Lesson</p>
+        <h1 class="text-xl font-bold">Carbon Footprints — Intro</h1>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-4">
+      <span class="hidden md:block text-gray-400 text-sm">~10 min</span>
+      <img id="navAvatar" class="w-9 h-9 rounded-full border-2 border-green-500" src="https://via.placeholder.com/40">
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="max-w-3xl mx-auto px-4 py-8">
+    <div id="cardWrapper" class="min-h-[300px]"></div>
+
+    <!-- Navigation -->
+    <div class="mt-8 flex items-center justify-between">
+      <button id="prevBtn" class="px-4 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-200 disabled:opacity-40" disabled>
+        <i class="fa-solid fa-chevron-left mr-2"></i> Previous
+      </button>
+
+      <div class="flex items-center gap-3">
+        <p class="text-sm text-gray-400 hidden md:block">
+          Step <span id="stepIndex">1</span> / <span id="stepTotal">4</span>
+        </p>
+        <button id="nextBtn" class="px-5 py-2 rounded-lg bg-green-600 hover:bg-green-500 font-semibold">
+          Next <i class="fa-solid fa-chevron-right ml-2"></i>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Toasts -->
+  <div id="toastContainer" class="fixed bottom-6 right-6 space-y-2 z-50"></div>
+
+  <!-- Confetti -->
+  <div id="confetti" class="confetti"></div>
+
+<script>
+/* --------------------------
+      STORAGE + DEFAULTS
+--------------------------- */
+const PROFILE_KEY = "ecoquest_profile_v1";
+const STATE_KEY = "ecoquest_state_v1";
+
+const defaultProfile = {
+  name: "Eco Warrior",
+  tagline: "Student",
+  avatar: "https://via.placeholder.com/100"
+};
+
+const defaultState = {
+  xp: 180,
+  xpForLevel: 500,
+  level: 5
+};
+
+function load(key, def) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : def;
+  } catch {
+    return def;
+  }
+}
+function save(key, obj) {
+  localStorage.setItem(key, JSON.stringify(obj));
+}
+
+let profile = load(PROFILE_KEY, defaultProfile);
+let state = load(STATE_KEY, defaultState);
+
+/* --------------------------
+          UI ELEMENTS
+--------------------------- */
+
+const navAvatar = document.getElementById("navAvatar");
+navAvatar.src = profile.avatar;
+
+const topProgress = document.getElementById("topProgress");
+const cardWrapper = document.getElementById("cardWrapper");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const stepIndexEl = document.getElementById("stepIndex");
+const stepTotalEl = document.getElementById("stepTotal");
+
+/* --------------------------
+          LESSON STEPS
+--------------------------- */
+const steps = [
+  {
+    type: "info",
+    title: "What is a Carbon Footprint?",
+    body: `
+      A <strong>carbon footprint</strong> measures the total greenhouse gases 
+      (mainly CO₂) produced directly or indirectly by an activity, person, or product.<br><br>
+      Everyday actions — transportation, electricity usage, food choices — all contribute to your footprint.
+    `
+  },
+  {
+    type: "example",
+    title: "Everyday Activities",
+    body: `
+      <ul class="list-disc pl-6 space-y-2">
+        <li>Driving 10 km → ~2.3 kg CO₂</li>
+        <li>Beef burger → high emission meal</li>
+        <li>LED bulb → saves electricity & CO₂</li>
+      </ul>
+    `
+  },
+  {
+    type: "question",
+    title: "Quick Question",
+    body: "Which action reduces your carbon footprint the most?",
+    choices: [
+      { text: "Replacing car trips with cycling", correct: true },
+      { text: "Using bottled water", correct: false },
+      { text: "Switching to halogen bulbs", correct: false },
+      { text: "Buying more new clothes", correct: false }
+    ],
+    xp: 25
+  },
+  {
+    type: "summary",
+    title: "Summary",
+    body: `
+      Small changes — cycling instead of driving, energy efficiency, reducing waste — 
+      add up to a huge impact over time.
+    `,
+    xp: 10
+  }
+];
+
+let currentStep = 0;
+stepTotalEl.textContent = steps.length;
+
+/* --------------------------
+    SAFE CARD RENDERING FIX
+--------------------------- */
+
+let currentCard = null;
+
+function renderStep(index) {
+  const step = steps[index];
+
+  stepIndexEl.textContent = index + 1;
+
+  const percent = Math.round((index / (steps.length - 1)) * 100);
+  topProgress.style.width = percent + "%";
+
+  prevBtn.disabled = index === 0;
+  nextBtn.textContent = index === steps.length - 1 ? "Finish" : "Next";
+
+  /* REMOVE OLD CARD SAFELY */
+  if (currentCard) {
+    const old = currentCard;
+    old.classList.add("card-exit-active");
+
+    setTimeout(() => {
+      old.remove();
+      loadNewCard(step, index);
+    }, 180); // matches .card-exit-active animation
+  } else {
+    // first time
+    loadNewCard(step, index);
+  }
+}
+
+function loadNewCard(step, index) {
+  const card = document.createElement("div");
+  card.className = "bg-gray-800 p-6 rounded-2xl shadow-md card-enter card-enter-active";
+
+  let html = `
+    <h2 class="text-xl font-bold mb-3">${step.title}</h2>
+    <div class="text-gray-300 leading-relaxed">${step.body}</div>
+  `;
+
+  // MCQ Question
+  if (step.type === "question") {
+    html += `<div class="mt-4 space-y-3" id="choices"></div>`;
+  }
+
+  card.innerHTML = html;
+  cardWrapper.appendChild(card);
+  currentCard = card;
+
+  if (step.type === "question") {
+    renderChoices(step);
+  }
+}
+
+/* --------------------------
+      QUESTION HANDLING
+--------------------------- */
+
+function renderChoices(step) {
+  const container = document.getElementById("choices");
+  step.choices.forEach((choice, i) => {
+    const btn = document.createElement("button");
+    btn.className =
+      "w-full text-left p-3 rounded-lg border border-gray-700 bg-gray-900 hover:border-green-500";
+    btn.innerHTML = `${i + 1}. ${choice.text}`;
+    btn.onclick = () => handleAnswer(choice, step);
+    container.appendChild(btn);
+  });
+
+  nextBtn.disabled = true;
+}
+
+function handleAnswer(choice, step) {
+  const correct = choice.correct;
+
+  if (correct) {
+    showToast(`Correct! +${step.xp} XP`);
+    rewardXP(step.xp);
+  } else {
+    showToast("Incorrect!", { error: true });
+  }
+
+  nextBtn.disabled = false;
+}
+
+/* --------------------------
+          XP + STATE
+--------------------------- */
+
+function rewardXP(amount) {
+  state.xp += amount;
+
+  if (state.xp >= state.xpForLevel) {
+    state.xp -= state.xpForLevel;
+    state.level++;
+    state.xpForLevel = Math.round(state.xpForLevel * 1.25);
+
+    showToast("🎉 Level Up!");
+    spawnConfetti();
+  }
+  save(STATE_KEY, state);
+}
+
+/* --------------------------
+             TOAST
+--------------------------- */
+
+function showToast(msg, opts={}) {
+  const box = document.createElement("div");
+  box.className =
+    "toast px-4 py-2 rounded-lg text-white shadow";
+  box.style.background = opts.error ? "#ef4444" : "#16a34a";
+  box.textContent = msg;
+
+  document.getElementById("toastContainer").appendChild(box);
+
+  setTimeout(() => box.classList.add("show"), 20);
+  setTimeout(() => box.classList.remove("show"), 2000);
+  setTimeout(() => box.remove(), 2300);
+}
+
+/* --------------------------
+         CONFETTI
+--------------------------- */
+
+function spawnConfetti() {
+  const c = document.getElementById("confetti");
+  c.innerHTML = "";
+
+  for (let i = 0; i < 18; i++) {
+    const dot = document.createElement("div");
+    dot.style.position = "absolute";
+    dot.style.width = dot.style.height = Math.random() * 8 + 4 + "px";
+    dot.style.background = ["#34d399", "#4ade80", "#a3e635", "#facc15"][Math.floor(Math.random()*4)];
+    dot.style.left = 50 + (Math.random()*40 - 20) + "vw";
+    dot.style.top = "20vh";
+    dot.style.borderRadius = "50%";
+    dot.style.opacity = "0.9";
+    c.appendChild(dot);
+
+    const dur = 800 + Math.random()*600;
+
+    dot.animate(
+      [
+        { transform:"translateY(0)", opacity:1 },
+        { transform:`translateY(${150 + Math.random()*100}px)`, opacity:0 }
+      ],
+      { duration: dur, easing:"cubic-bezier(.2,.8,.2,1)" }
+    );
+
+    setTimeout(()=> dot.remove(), dur+50);
+  }
+}
+
+/* --------------------------
+         NAVIGATION
+--------------------------- */
+
+nextBtn.onclick = () => {
+  if (steps[currentStep].type === "question") {
+    nextBtn.disabled = false;
+  }
+
+  if (currentStep < steps.length - 1) {
+    currentStep++;
+    renderStep(currentStep);
+  } else {
+    showToast("Lesson Completed!");
+  }
+};
+
+prevBtn.onclick = () => {
+  if (currentStep > 0) {
+    currentStep--;
+    renderStep(currentStep);
+  }
+};
+
+/* --------------------------
+      INITIAL RENDER
+--------------------------- */
+
+renderStep(0);
+</script>
+
+</body>
+</html>
