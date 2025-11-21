@@ -1,350 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>EcoQuest • Learning Hub</title>
-
-  <!-- Tailwind + Font Awesome -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcoQuest • Learning Path</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+  
   <style>
-    .card-hover {
-      transition: all 0.3s ease;
-    }
-    .card-hover:hover {
-      transform: translateY(-4px);
-    }
-    
-    .topic-icon {
-      transition: transform 0.3s ease;
-    }
-    .card-hover:hover .topic-icon {
-      transform: scale(1.1);
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: #111827;
     }
 
-    .progress-ring {
-      transform: rotate(-90deg);
-    }
+    /* Soft Green Glow */
+    .glow-text { text-shadow: 0 0 20px rgba(74, 222, 128, 0.4); }
+    .glow-box { box-shadow: 0 0 25px -5px rgba(74, 222, 128, 0.15); }
 
-    .stats-card {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(34, 197, 94, 0.05) 100%);
+    /* Timeline Connector Line */
+    .timeline-line {
+      position: absolute;
+      left: 24px;
+      top: 40px;
+      bottom: -20px;
+      width: 2px;
+      background: #374151;
+      z-index: 0;
     }
+    .timeline-item:last-child .timeline-line { display: none; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #111827; }
+    ::-webkit-scrollbar-thumb { background: #374151; border-radius: 3px; }
   </style>
 </head>
+<body class="text-gray-100 min-h-screen flex flex-col">
 
-<body class="bg-gray-900 text-gray-100 font-sans">
-
-  <!-- Header -->
-  <header class="bg-gray-900 border-b border-gray-800">
-    <div class="max-w-6xl mx-auto px-4 py-6">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-4">
-          <div class="w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-lime-300 flex items-center justify-center">
-            <i class="fa-solid fa-leaf text-gray-900 text-xl"></i>
-          </div>
-          <div>
-            <h1 class="text-2xl font-bold">EcoQuest</h1>
-            <p class="text-sm text-gray-400">Learn. Practice. Make a Difference.</p>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-4">
-          <img id="navAvatar" class="w-10 h-10 rounded-full border-2 border-green-500" src="https://via.placeholder.com/100">
-        </div>
-      </div>
+  <header class="h-16 flex items-center justify-between px-6 bg-gray-800 border-b border-gray-700">
+    <div class="flex items-center gap-4">
+		<a href="index.html" class="text-gray-300 hover:text-green-400 hover:bg-gray-500/30 px-2 py-1 rounded-full">
+			<i class="fa-solid fa-arrow-left text-xl"></i>
+		</a>
+		<h2 class="text-2xl font-semibold">Learning Path</h2>
+	</div>
+    <div class="flex items-center gap-4">
+      <button class="text-gray-400 hover:text-white"><i class="fa-solid fa-bell"></i></button>
+      <img id="profile_avatar_nav" src="https://via.placeholder.com/40" class="w-8 h-8 rounded-full border-2 border-green-500" />
     </div>
   </header>
 
-  <!-- Main Content -->
-  <main class="max-w-6xl mx-auto px-4 py-8">
-    
-    <!-- User Stats Section -->
-    <section class="mb-8">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <!-- Level Card -->
-        <div class="stats-card rounded-2xl p-6 border border-gray-800">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-sm text-gray-400 mb-1">Your Level</p>
-              <p class="text-3xl font-bold text-green-400" id="userLevel">5</p>
-            </div>
-            <div class="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center">
-              <i class="fa-solid fa-trophy text-green-400 text-2xl"></i>
-            </div>
-          </div>
-        </div>
-
-        <!-- XP Card -->
-        <div class="stats-card rounded-2xl p-6 border border-gray-800">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-sm text-gray-400 mb-1">Experience</p>
-              <p class="text-3xl font-bold text-lime-400"><span id="userXP">180</span> XP</p>
-            </div>
-            <div class="w-16 h-16 rounded-full bg-lime-500/20 flex items-center justify-center">
-              <i class="fa-solid fa-star text-lime-400 text-2xl"></i>
-            </div>
-          </div>
-          <div class="mt-3 bg-gray-800 rounded-full h-2 overflow-hidden">
-            <div id="xpBar" class="h-full bg-gradient-to-r from-green-400 to-lime-300 transition-all duration-500" style="width: 36%"></div>
-          </div>
-          <p class="text-xs text-gray-500 mt-1"><span id="xpNeeded">320</span> XP to next level</p>
-        </div>
-
-        <!-- Lessons Completed -->
-        <div class="stats-card rounded-2xl p-6 border border-gray-800">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-sm text-gray-400 mb-1">Lessons Completed</p>
-              <p class="text-3xl font-bold text-blue-400" id="lessonsCompleted">0</p>
-            </div>
-            <div class="w-16 h-16 rounded-full bg-blue-500/20 flex items-center justify-center">
-              <i class="fa-solid fa-book-open text-blue-400 text-2xl"></i>
-            </div>
-          </div>
-        </div>
-      </div>
+  <main class="max-w-5xl w-full mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <section class="lg:col-span-2">
+      <h2 class="text-2xl font-light mb-6 text-gray-400">Your <span class="text-white glow-text">Learning Path</span></h2>
+      <div id="pathContainer" class="space-y-0"></div>
     </section>
 
-    <!-- Topics Section -->
-    <section>
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-bold">Learning Topics</h2>
-        <p class="text-sm text-gray-400">Choose a topic to start learning</p>
+    <div class="space-y-6">
+      <div class="bg-gray-800/50 rounded-2xl p-6 border border-gray-700 glow-box">
+        <h3 class="text-lg font-semibold mb-2">Total Progress</h3>
+        <div class="w-full bg-gray-700 rounded-full h-2 mb-2">
+            <div id="totalProgressBar" class="bg-green-500 h-2 rounded-full transition-all duration-1000" style="width: 0%"></div>
+        </div>
+        <div class="flex justify-between text-xs text-gray-400">
+            <span id="completedCount">0 Modules</span>
+            <span>100% Goal</span>
+        </div>
       </div>
 
-      <div id="topicsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Topics will be rendered here -->
+      <div class="bg-gray-800/50 rounded-2xl p-6 border border-gray-700 flex items-center justify-between">
+        <div>
+            <p class="text-gray-400 text-sm">Current XP</p>
+            <p id="xpDisplay" class="text-3xl font-bold text-white">1,250</p>
+        </div>
+        <i class="fa-solid fa-trophy text-4xl text-yellow-500/20"></i>
       </div>
-    </section>
-
+    </div>
   </main>
 
-  <!-- Footer -->
-  <footer class="mt-16 py-8 border-t border-gray-800">
-    <div class="max-w-6xl mx-auto px-4 text-center text-gray-500 text-sm">
-      <p>🌍 Every lesson brings us closer to a sustainable future</p>
-    </div>
-  </footer>
+  <script>
+    // --- Data: The Learning Modules ---
+    const modules = [
+      { id: 1, title: "Intro to Sustainability", desc: "Why does the planet need us?", status: "completed", icon: "fa-seedling" },
+      { id: 2, title: "Carbon Footprint 101", desc: "Calculate your personal impact.", status: "active", icon: "fa-shoe-prints" },
+      { id: 3, title: "Renewable Energy", desc: "Solar, Wind, and Hydro power.", status: "locked", icon: "fa-solar-panel" },
+      { id: 4, title: "Zero Waste Living", desc: "Reducing plastic in daily life.", status: "locked", icon: "fa-recycle" },
+      { id: 5, title: "Ocean Conservation", desc: "Protecting our marine life.", status: "locked", icon: "fa-water" }
+    ];
 
-<script>
-/* --------------------------
-      STORAGE + DEFAULTS
---------------------------- */
-const PROFILE_KEY = "ecoquest_profile_v1";
-const STATE_KEY = "ecoquest_state_v1";
-const PROGRESS_KEY = "ecoquest_progress_v1";
+    const container = document.getElementById('pathContainer');
 
-const defaultProfile = {
-  name: "Eco Warrior",
-  tagline: "Student",
-  avatar: "https://via.placeholder.com/100"
-};
+    // --- Function to Render the Timeline ---
+    function renderPath() {
+      container.innerHTML = '';
+      let completed = 0;
 
-const defaultState = {
-  xp: 180,
-  xpForLevel: 500,
-  level: 5
-};
+      modules.forEach((mod, index) => {
+        if(mod.status === 'completed') completed++;
 
-const defaultProgress = {
-  completed: []
-};
+        // Determine styles based on status
+        let colorClass = "text-gray-500 bg-gray-800 border-gray-700"; // Locked default
+        let iconColor = "text-gray-600";
+        let btnText = "Locked";
+        let btnAction = "disabled";
 
-function load(key, def) {
-  try {
-    const raw = localStorage.getItem(key);
-    return raw ? JSON.parse(raw) : def;
-  } catch {
-    return def;
-  }
-}
+        if (mod.status === 'completed') {
+          colorClass = "text-green-400 bg-green-900/10 border-green-500/50";
+          iconColor = "text-green-400";
+          btnText = "Review";
+          btnAction = "onclick='alert(\"Reviewing lesson...\")'";
+        } else if (mod.status === 'active') {
+          colorClass = "text-white bg-gray-800 border-green-500 shadow-[0_0_15px_rgba(34,197,94,0.1)]";
+          iconColor = "text-white animate-pulse";
+          btnText = "Start Lesson";
+          btnAction = `onclick="completeModule(${index})"`;
+        }
 
-function save(key, obj) {
-  localStorage.setItem(key, JSON.stringify(obj));
-}
+        const html = `
+          <div class="timeline-item relative pl-16 pb-12 group">
+            <div class="timeline-line"></div>
+            
+            <div class="absolute left-0 top-0 w-12 h-12 rounded-full border-2 bg-gray-900 flex items-center justify-center z-10 ${mod.status === 'active' ? 'border-green-500 shadow-[0_0_10px_#22c55e]' : 'border-gray-700'}">
+              <i class="fa-solid ${mod.icon} ${iconColor}"></i>
+            </div>
 
-let profile = load(PROFILE_KEY, defaultProfile);
-let state = load(STATE_KEY, defaultState);
-let progress = load(PROGRESS_KEY, defaultProgress);
+            <div class="p-6 rounded-2xl border ${colorClass} transition-all duration-300 hover:transform hover:translate-x-2">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="text-xl font-bold mb-1">${mod.title}</h3>
+                  <p class="text-sm opacity-70">${mod.desc}</p>
+                </div>
+                ${mod.status === 'completed' ? '<i class="fa-solid fa-circle-check text-green-500 text-xl"></i>' : ''}
+              </div>
+              
+              <div class="mt-4">
+                <button ${btnAction} class="text-xs font-bold uppercase tracking-wider py-2 px-4 rounded-lg border border-gray-600 hover:bg-gray-700 transition-colors ${mod.status === 'locked' ? 'opacity-50 cursor-not-allowed' : ''}">
+                  ${btnText}
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+        container.innerHTML += html;
+      });
 
-/* --------------------------
-      TOPICS DATA
---------------------------- */
-const topics = [
-  {
-    id: "carbon-footprint",
-    title: "Carbon Footprints",
-    description: "Learn what carbon footprints are and how your daily actions impact the environment",
-    icon: "fa-solid fa-shoe-prints",
-    color: "from-green-500 to-emerald-600",
-    duration: "10 min",
-    xp: 35,
-    lessons: 4
-  },
-  {
-    id: "renewable-energy",
-    title: "Renewable Energy",
-    description: "Explore solar, wind, and hydro power as sustainable alternatives to fossil fuels",
-    icon: "fa-solid fa-bolt",
-    color: "from-yellow-500 to-orange-600",
-    duration: "12 min",
-    xp: 40,
-    lessons: 5
-  },
-  {
-    id: "waste-management",
-    title: "Waste Management",
-    description: "Master the 3Rs: Reduce, Reuse, Recycle for a cleaner planet",
-    icon: "fa-solid fa-recycle",
-    color: "from-blue-500 to-cyan-600",
-    duration: "8 min",
-    xp: 30,
-    lessons: 4
-  },
-  {
-    id: "water-conservation",
-    title: "Water Conservation",
-    description: "Discover practical ways to save water and protect this precious resource",
-    icon: "fa-solid fa-droplet",
-    color: "from-cyan-500 to-blue-600",
-    duration: "9 min",
-    xp: 35,
-    lessons: 4
-  },
-  {
-    id: "sustainable-food",
-    title: "Sustainable Food",
-    description: "Learn how food choices impact the environment and your health",
-    icon: "fa-solid fa-apple-whole",
-    color: "from-lime-500 to-green-600",
-    duration: "11 min",
-    xp: 40,
-    lessons: 5
-  },
-  {
-    id: "biodiversity",
-    title: "Biodiversity",
-    description: "Understand the importance of protecting diverse ecosystems and species",
-    icon: "fa-solid fa-paw",
-    color: "from-purple-500 to-pink-600",
-    duration: "10 min",
-    xp: 35,
-    lessons: 4
-  },
-  {
-    id: "climate-change",
-    title: "Climate Change",
-    description: "Understand the science behind climate change and its global impacts",
-    icon: "fa-solid fa-temperature-high",
-    color: "from-red-500 to-orange-600",
-    duration: "13 min",
-    xp: 45,
-    lessons: 6
-  },
-  {
-    id: "green-transportation",
-    title: "Green Transportation",
-    description: "Explore eco-friendly ways to travel and reduce emissions",
-    icon: "fa-solid fa-bicycle",
-    color: "from-teal-500 to-green-600",
-    duration: "9 min",
-    xp: 35,
-    lessons: 4
-  },
-  {
-    id: "plastic-pollution",
-    title: "Plastic Pollution",
-    description: "Learn about the plastic crisis and how to reduce single-use plastics",
-    icon: "fa-solid fa-bottle-water",
-    color: "from-indigo-500 to-blue-600",
-    duration: "10 min",
-    xp: 35,
-    lessons: 4
-  }
-];
+      const percent = (completed / modules.length) * 100;
+      document.getElementById('totalProgressBar').style.width = `${percent}%`;
+      document.getElementById('completedCount').innerText = `${completed} / ${modules.length} Done`;
+    }
 
-/* --------------------------
-      UI UPDATES
---------------------------- */
-function updateUI() {
-  document.getElementById("navAvatar").src = profile.avatar;
-  document.getElementById("userLevel").textContent = state.level;
-  document.getElementById("userXP").textContent = state.xp;
-  
-  const xpPercent = (state.xp / state.xpForLevel) * 100;
-  document.getElementById("xpBar").style.width = xpPercent + "%";
-  document.getElementById("xpNeeded").textContent = state.xpForLevel - state.xp;
-  
-  document.getElementById("lessonsCompleted").textContent = progress.completed.length;
-}
-
-/* --------------------------
-      RENDER TOPICS
---------------------------- */
-function renderTopics() {
-  const grid = document.getElementById("topicsGrid");
-  
-  topics.forEach(topic => {
-    const isCompleted = progress.completed.includes(topic.id);
-    
-    const card = document.createElement("div");
-    card.className = "card-hover bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:border-green-500 cursor-pointer";
-    
-    card.innerHTML = `
-      <div class="flex items-start justify-between mb-4">
-        <div class="w-14 h-14 rounded-xl bg-gradient-to-br ${topic.color} flex items-center justify-center topic-icon">
-          <i class="${topic.icon} text-white text-2xl"></i>
-        </div>
-        ${isCompleted ? '<div class="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center"><i class="fa-solid fa-check text-white text-sm"></i></div>' : ''}
-      </div>
+    // --- Interaction Logic ---
+    function completeModule(index) {
+      modules[index].status = 'completed';
       
-      <h3 class="text-xl font-bold mb-2">${topic.title}</h3>
-      <p class="text-gray-400 text-sm mb-4 leading-relaxed">${topic.description}</p>
-      
-      <div class="flex items-center justify-between text-sm">
-        <div class="flex items-center gap-4 text-gray-500">
-          <span><i class="fa-solid fa-clock mr-1"></i> ${topic.duration}</span>
-          <span><i class="fa-solid fa-book mr-1"></i> ${topic.lessons} lessons</span>
-        </div>
-        <div class="text-green-400 font-semibold">+${topic.xp} XP</div>
-      </div>
-      
-      <button class="mt-4 w-full py-2 rounded-lg bg-gray-700 hover:bg-green-600 font-semibold transition-colors">
-        ${isCompleted ? 'Review Lesson' : 'Start Learning'}
-      </button>
-    `;
-    
-    card.querySelector('button').onclick = (e) => {
-      e.stopPropagation();
-      startLesson(topic.id);
-    };
-    
-    grid.appendChild(card);
-  });
-}
+      if (index + 1 < modules.length) {
+        modules[index + 1].status = 'active';
+      }
 
-/* --------------------------
-      START LESSON
---------------------------- */
-function startLesson(topicId) {
-  // For the carbon footprint topic, redirect to the existing lesson page
-  if (topicId === "carbon-footprint") {
-    window.location.href = "lesson.html";
-  } else {
-    // For other topics, show a coming soon message
-    alert(`The ${topics.find(t => t.id === topicId).title} lesson is coming soon! Stay tuned.`);
-  }
-}
-
-/* --------------------------
-      INITIALIZATION
---------------------------- */
-updateUI();
-renderTopics();
-</script>
-
+      // XP visual
+      const xpEl = document.getElementById('xpDisplay');
+      let currentXp = parseInt(xpEl.innerText.replace(',',''));
+      xpEl.innerText = (currentXp + 150).toLocaleString();
+      renderPath();
+    }
+    renderPath();
+  </script>
 </body>
 </html>
