@@ -3,462 +3,346 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EcoQuest Dashboard</title>
+  <title>EcoQuest • Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
   <style>
-    .text-shadow-green { text-shadow: 0 0 15px rgba(74, 222, 128, 0.5); }
-    .text-shadow-yellow { text-shadow: 0 0 15px rgba(250, 204, 21, 0.5); }
-    /* small transition for modal */
-    .modal-fade { transition: opacity .18s ease, transform .18s ease; }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: #0f172a;
+    }
+
+    .nav-item.active {
+      background-color: #16a34a;
+      color: white;
+      box-shadow: 0 4px 20px rgba(22, 163, 74, 0.3);
+    }
+
+    .eco-card {
+      background-color: #1e293b;
+      border: 1px solid #334155;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .eco-card:hover {
+      transform: translateY(-2px);
+      border-color: #4ade80;
+    }
+
+    /* Toast Notification Animation */
+    .toast {
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .progress-fill { transition: width 1s ease-out; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
   </style>
 </head>
-<body class="bg-gray-900 text-gray-100 font-sans">
+<body class="text-gray-100 h-screen flex overflow-hidden">
 
-  <div class="flex min-h-screen">
-
-    <!-- SIDEBAR -->
-    <div class="w-20 md:w-64 bg-gray-800 border-r border-gray-700 flex-col hidden sm:flex">
-      <div class="h-16 flex items-center justify-center md:justify-start md:px-6 border-b border-gray-700">
-        <h1 class="text-2xl font-extrabold bg-gradient-to-r from-green-400 to-lime-500 bg-clip-text text-transparent hidden md:block">EcoQuest</h1>
-        <i class="fa-solid fa-leaf text-green-400 text-2xl md:hidden"></i>
-      </div>
-      <nav class="flex-1 p-4 space-y-2">
-        <a href="index.html" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-green-600 text-white font-medium shadow-lg shadow-green-500/20">
-          <i class="fa-solid fa-house"></i>
-          <span class="hidden md:block">Dashboard</span>
-        </a>
-        <a href="ecolessons.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-green-600/40 hover:text-white transition-all duration-200">
-          <i class="fa-solid fa-seedling"></i>
-          <span class="hidden md:block">Eco Lessons</span>
-        </a>
-        <a href="missions.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-green-600/40 hover:text-white transition-all duration-200">
-          <i class="fa-solid fa-recycle"></i>
-          <span class="hidden md:block">Green Missions</span>
-        </a>
-        <a href="leaderboard.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-green-600/40 hover:text-white transition-all duration-200">
-          <i class="fa-solid fa-trophy"></i>
-          <span class="hidden md:block">Leaderboard</span>
-        </a>
-        <a href="saved.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-green-600/40 hover:text-white transition-all duration-200">
-          <i class="fa-solid fa-bookmark"></i>
-          <span class="hidden md:block">Saved Topics</span>
-        </a>
-      </nav>
-
-      <div class="p-4 border-t border-gray-700">
-        <a href="profilePage.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 bg-gray-800/50 hover:bg-green-600/50 hover:text-white transition-all duration-300 ease-in-out shadow-md ring-1 ring-gray-700 hover:ring-green-400">
-          <!-- sidebar avatar -->
-          <img id="profile_avatar_sidebar" src="https://via.placeholder.com/40" class="w-8 h-8 rounded-full border-2 border-green-500 hidden md:block" />
-          <span class="hidden md:block font-semibold tracking-wide">Profile</span>
-        </a>
-      </div>
+  <aside class="w-64 bg-gray-900 flex flex-col border-r border-gray-800 flex-shrink-0">
+    <div class="h-20 flex items-center px-8">
+      <h1 class="text-2xl font-bold text-green-500 tracking-tight"><i class="fa-solid fa-leaf mr-2"></i>EcoQuest</h1>
     </div>
 
-    <main class="flex-1">
+    <nav class="flex-1 px-4 space-y-2 py-4">
+      <a href="#" class="nav-item active flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all">
+        <i class="fa-solid fa-house"></i> <span>Dashboard</span>
+      </a>
+      <a href="ecolessons.html" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 transition-all">
+        <i class="fa-solid fa-book-open"></i> <span>Eco Lessons</span>
+      </a>
+      <a href="missions.html" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 transition-all">
+        <i class="fa-solid fa-crosshairs"></i> <span>Eco Missions</span>
+      </a>
+      <a href="leaderboard.html" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 transition-all">
+        <i class="fa-solid fa-trophy"></i> <span>Leaderboard</span>
+      </a>
+    </nav>
 
-      <!-- HEADER -->
-      <header class="h-16 flex items-center justify-between px-6 bg-gray-900 border-b border-gray-700">
-        <h2 class="text-2xl font-semibold">Dashboard</h2>
-        <div class="flex items-center gap-4">
-          <button id="searchBtn" class="text-gray-400 hover:text-white"><i class="fa-solid fa-search"></i></button>
-          <button id="bellBtn" class="text-gray-400 hover:text-white"><i class="fa-solid fa-bell"></i></button>
-          <!-- navbar avatar -->
-          <img id="profile_avatar_nav" src="https://via.placeholder.com/40" class="w-8 h-8 rounded-full border-2 border-green-500" />
+    <div class="p-4 mt-auto">
+      <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 transition-all">
+        <i class="fa-solid fa-gear"></i> <span>Settings</span>
+      </a>
+    </div>
+  </aside>
+
+  <main class="flex-1 flex flex-col relative overflow-hidden">
+    
+    <header class="h-20 flex items-center justify-between px-8 bg-gray-900/50 backdrop-blur-sm border-b border-gray-800 sticky top-0 z-10">
+      <h2 class="text-xl font-bold">Dashboard</h2>
+      
+      <div class="flex items-center gap-6">
+        <div class="relative hidden md:block">
+          <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"></i>
+          <input type="text" id="searchInput" placeholder="Search missions or lessons..." class="bg-gray-800 border border-gray-700 text-sm text-gray-200 rounded-full pl-10 pr-4 py-2 focus:outline-none focus:border-green-500 w-64 placeholder-gray-500 transition-all focus:w-80">
         </div>
-      </header>
+        
+        <button class="text-gray-400 hover:text-white relative">
+            <i class="fa-regular fa-bell text-lg"></i>
+            <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+        </button>
+        <div class="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-gray-900 font-bold cursor-pointer">AK</div>
+      </div>
+    </header>
 
-      <!-- GRID -->
-      <div class="grid grid-cols-1 xl:grid-cols-3 gap-8 p-6">
-        <div class="xl:col-span-2 space-y-8">
-
-          <!-- Continue Learning -->
-          <section>
-            <h3 class="text-xl font-semibold mb-4">Continue Learning</h3>
-            <div class="bg-gray-800 rounded-2xl p-6 border border-green-500/50 shadow-lg shadow-green-900/10">
-              <div class="flex flex-col md:flex-row gap-6">
-                <div class="w-16 h-16 rounded-lg bg-gradient-to-br from-green-600 to-lime-600 flex items-center justify-center">
-                  <i class="fa-solid fa-globe text-3xl"></i>
-                </div>
-                <div class="flex-1">
-                  <span class="text-sm font-medium text-green-400">Climate Awareness</span>
-                  <h4 class="text-2xl font-bold mt-1 mb-3">Understanding Carbon Footprints</h4>
-                  <p class="text-gray-400 mb-4">Learn how daily choices influence global emissions and sustainability.</p>
-                  <div class="w-full bg-gray-700 rounded-full h-2.5 mb-1">
-                    <div id="lesson_progress" class="bg-green-500 h-2.5 rounded-full" style="width: 40%"></div>
+    <div class="flex-1 overflow-y-auto p-8" id="mainContainer">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        
+        <div class="lg:col-span-2 space-y-8">
+          
+          <div class="eco-card rounded-2xl p-6 md:p-8 relative searchable-item" data-keywords="carbon footprint climate awareness lesson">
+            <div class="flex flex-col md:flex-row gap-6 items-start">
+              <div class="w-16 h-16 rounded-2xl bg-green-500 flex items-center justify-center flex-shrink-0 shadow-lg shadow-green-500/20">
+                <i class="fa-solid fa-globe text-white text-3xl"></i>
+              </div>
+              
+              <div class="flex-1 w-full">
+                <div class="flex justify-between items-start mb-2">
+                  <div>
+                    <span class="text-green-400 text-xs font-bold uppercase tracking-wider">Climate Awareness</span>
+                    <h4 class="text-2xl font-bold mt-1">Understanding Carbon Footprints</h4>
                   </div>
-                  <span id="lesson_progress_label" class="text-sm text-gray-400">40% Complete</span>
-                </div>
-                <div class="flex-shrink-0 self-center">
-                  <button class="continueBtn px-6 py-3 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-500">
-                    Continue <i class="fa-solid fa-arrow-right ml-2"></i>
+                  <button onclick="continueLesson()" class="bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold px-6 py-2 rounded-lg transition-transform active:scale-95 text-sm flex items-center gap-2">
+                    Continue <i class="fa-solid fa-arrow-right"></i>
                   </button>
                 </div>
+                
+                <p class="text-gray-400 text-sm mb-6 max-w-lg">Learn how daily choices influence global emissions and sustainability.</p>
+                
+                <div class="w-full bg-gray-700 h-2 rounded-full overflow-hidden">
+                  <div id="lessonProgressBar" class="bg-green-500 h-full w-[40%] progress-fill"></div>
+                </div>
+                <p id="lessonProgressText" class="text-xs text-gray-500 mt-2 font-medium">40% Complete</p>
               </div>
             </div>
-          </section>
+          </div>
 
-          <!-- Recommended Missions -->
-          <section>
-            <h3 class="text-xl font-semibold mb-4">Recommended Missions</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-              <div class="bg-gray-800 rounded-2xl p-6 hover:ring-2 hover:ring-green-500 border border-gray-700">
-                <i class="fa-solid fa-tree text-3xl text-green-400 mb-4"></i>
-                <span class="text-sm font-medium text-green-400">Plantation Drive</span>
-                <h4 class="text-xl font-bold my-2">Plant a Sapling</h4>
-                <p class="text-gray-400 text-sm mb-4">Contribute to greener surroundings by planting and nurturing a sapling.</p>
-                <button data-mission="Plant a Sapling" class="startMissionBtn w-full px-4 py-2 bg-gray-700 text-white font-semibold rounded-lg hover:bg-green-600">Start Mission</button>
-              </div>
-
-              <div class="bg-gray-800 rounded-2xl p-6 hover:ring-2 hover:ring-yellow-500 border border-gray-700">
-                <i class="fa-solid fa-bottle-water text-3xl text-yellow-400 mb-4"></i>
-                <span class="text-sm font-medium text-yellow-400">Waste Reduction</span>
-                <h4 class="text-xl font-bold my-2">Plastic-Free Week</h4>
-                <p class="text-gray-400 text-sm mb-4">Take the challenge to avoid single-use plastic for 7 days.</p>
-                <button data-mission="Plastic-Free Week" class="startMissionBtn w-full px-4 py-2 bg-gray-700 text-white font-semibold rounded-lg hover:bg-yellow-600">Start Mission</button>
-              </div>
-
-            </div>
-          </section>
-        </div>
-
-        <!-- RIGHT COLUMN -->
-        <div class="xl:col-span-1 space-y-6">
-
-          <!-- PROFILE CARD -->
-          <div class="bg-gray-800 rounded-2xl p-6 border border-gray-700">
-            <div class="flex items-center gap-4">
-              <img id="profile_avatar_card" src="https://via.placeholder.com/56" class="w-14 h-14 rounded-full border-2 border-green-500" />
+          <h3 class="text-xl font-bold pt-2 flex items-center gap-2">
+             Recommended Missions <span class="text-xs bg-gray-800 text-gray-400 px-2 py-1 rounded border border-gray-700">2 Active</span>
+          </h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <div class="eco-card rounded-2xl p-6 flex flex-col justify-between h-full searchable-item" data-keywords="plant sapling tree nature">
               <div>
-                <h4 id="profile_card_name" class="text-xl font-bold">Eco Warrior</h4>
-                <span id="profile_card_tag" class="text-gray-400">Level 5</span>
+                <div class="flex items-center gap-2 mb-3">
+                  <i class="fa-solid fa-tree text-green-400"></i>
+                  <span class="text-green-400 text-xs font-bold uppercase">Plantation Drive</span>
+                </div>
+                <h4 class="text-lg font-bold mb-2">Plant a Sapling</h4>
+                <p class="text-gray-400 text-sm mb-6">Contribute to greener surroundings by planting and nurturing a sapling.</p>
+              </div>
+              <button onclick="handleMission(this, 50)" class="mission-btn w-full bg-gray-900 hover:bg-green-600 text-white font-semibold py-3 rounded-xl border border-gray-700 hover:border-green-500 transition-all active:scale-95">
+                Start Mission (+50 XP)
+              </button>
+            </div>
+
+            <div class="eco-card rounded-2xl p-6 flex flex-col justify-between h-full searchable-item" data-keywords="plastic waste reduction recycle">
+              <div>
+                <div class="flex items-center gap-2 mb-3">
+                  <i class="fa-solid fa-trash-can text-yellow-400"></i>
+                  <span class="text-yellow-400 text-xs font-bold uppercase">Waste Reduction</span>
+                </div>
+                <h4 class="text-lg font-bold mb-2">Plastic-Free Week</h4>
+                <p class="text-gray-400 text-sm mb-6">Take the challenge to avoid single-use plastic for 7 days.</p>
+              </div>
+              <button onclick="handleMission(this, 100)" class="mission-btn w-full bg-gray-900 hover:bg-yellow-500 hover:text-gray-900 text-white font-semibold py-3 rounded-xl border border-gray-700 hover:border-yellow-400 transition-all active:scale-95">
+                Start Mission (+100 XP)
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          
+          <div class="eco-card rounded-2xl p-6">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-14 h-14 rounded-full border-2 border-green-500 bg-gray-700 flex items-center justify-center text-xl font-bold text-green-400">
+                AK
+              </div>
+              <div>
+                <h4 class="font-bold text-lg">Ashish Kumar</h4>
+                <p class="text-xs text-gray-400">Student | Environmentalist</p>
               </div>
             </div>
-            <div class="mt-4">
-              <div class="flex justify-between text-sm text-gray-400 mb-1">
-                <span id="card_xp_label">XP: 180 / 500</span>
-                <span id="card_level_label">Level 6</span>
-              </div>
-              <div class="w-full bg-gray-700 rounded-full h-3">
-                <div id="card_progress" class="bg-gradient-to-r from-green-400 to-lime-400 h-3 rounded-full" style="width: 36%"></div>
-              </div>
+            
+            <div class="flex justify-between items-end mb-1">
+              <span class="text-xs font-bold text-gray-400">XP: <span id="currentXP">265</span> / <span id="maxXP">625</span></span>
+              <span class="text-xs font-bold text-green-400">Level <span id="currentLevel">5</span></span>
+            </div>
+            <div class="w-full bg-gray-700 h-2 rounded-full overflow-hidden">
+              <div id="xpBar" class="bg-green-500 h-full w-[42%] progress-fill"></div>
             </div>
           </div>
 
-          <!-- STREAK -->
-          <div class="bg-gray-800 rounded-2xl p-6 border border-gray-700 text-center">
-            <i class="fa-solid fa-fire-flame-curved text-6xl text-yellow-400 text-shadow-yellow"></i>
-            <h4 id="streak_title" class="text-3xl font-bold mt-3">3 Day Eco Streak!</h4>
-            <p id="streak_desc" class="text-gray-400 mt-1">Complete a mission tomorrow to keep your streak alive.</p>
-            <div class="flex justify-center gap-2 mt-4">
-              <span class="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center font-bold text-white">M</span>
-              <span class="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center font-bold text-white">T</span>
-              <span class="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center font-bold text-white">W</span>
+          <div class="eco-card rounded-2xl p-6 text-center group">
+            <div class="w-12 h-12 mx-auto bg-orange-500/10 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+              <i class="fa-solid fa-fire text-orange-500 text-2xl"></i>
+            </div>
+            <h4 class="text-2xl font-bold text-white">8 Day Streak!</h4>
+            <p class="text-gray-400 text-sm mb-6">Keep it up, hero!</p>
+            
+            <div class="flex justify-center gap-3">
+              <div class="w-8 h-8 rounded-full bg-green-600 flex items-center justify-center text-xs font-bold shadow-lg shadow-green-500/20">M</div>
+              <div class="w-8 h-8 rounded-full bg-green-600 flex items-center justify-center text-xs font-bold shadow-lg shadow-green-500/20">T</div>
+              <div class="w-8 h-8 rounded-full bg-green-600 flex items-center justify-center text-xs font-bold shadow-lg shadow-green-500/20">W</div>
             </div>
           </div>
 
-          <!-- RECENT BADGES -->
-          <div class="bg-gray-800 rounded-2xl p-6 border border-gray-700">
-            <h4 class="text-xl font-bold mb-4">Recent Badges</h4>
-            <div class="grid grid-cols-4 gap-4">
-              <div class="flex flex-col items-center"><i class="fa-solid fa-leaf text-5xl text-green-400"></i><span class="text-xs mt-1 text-gray-400">Green</span></div>
-              <div class="flex flex-col items-center"><i class="fa-solid fa-recycle text-5xl text-blue-400"></i><span class="text-xs mt-1 text-gray-400">Recycle</span></div>
-              <div class="flex flex-col items-center"><i class="fa-solid fa-solar-panel text-5xl text-yellow-400"></i><span class="text-xs mt-1 text-gray-400">Solar</span></div>
-              <div class="flex flex-col items-center"><i class="fa-solid fa-lock text-5xl text-gray-600"></i><span class="text-xs mt-1 text-gray-500">Locked</span></div>
+          <div class="eco-card rounded-2xl p-6">
+            <h4 class="font-bold mb-4">Recent Badges</h4>
+            <div class="grid grid-cols-4 gap-2 text-center">
+              <div class="flex flex-col items-center gap-1 cursor-pointer hover:scale-110 transition-transform">
+                <div class="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center text-green-400 border border-green-500/20">
+                  <i class="fa-solid fa-leaf"></i>
+                </div>
+                <span class="text-[10px] text-gray-400">Green</span>
+              </div>
+              <div class="flex flex-col items-center gap-1 cursor-pointer hover:scale-110 transition-transform">
+                <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 border border-blue-500/20">
+                  <i class="fa-solid fa-recycle"></i>
+                </div>
+                <span class="text-[10px] text-gray-400">Recycle</span>
+              </div>
+              <div class="flex flex-col items-center gap-1 cursor-pointer hover:scale-110 transition-transform">
+                <div class="w-12 h-12 rounded-xl bg-yellow-500/10 flex items-center justify-center text-yellow-400 border border-yellow-500/20">
+                  <i class="fa-solid fa-sun"></i>
+                </div>
+                <span class="text-[10px] text-gray-400">Solar</span>
+              </div>
+              <div class="flex flex-col items-center gap-1 opacity-50">
+                <div class="w-12 h-12 rounded-xl bg-gray-700 flex items-center justify-center text-gray-500">
+                  <i class="fa-solid fa-lock"></i>
+                </div>
+                <span class="text-[10px] text-gray-400">Locked</span>
+              </div>
             </div>
           </div>
 
         </div>
-      </div>
-    </main>
-  </div>
-
-  <!-- mobile nav -->
-  <nav class="sm:hidden fixed bottom-0 left-0 w-full bg-gray-800 border-t border-gray-700 flex justify-around py-2">
-    <a class="flex flex-col items-center p-2 text-green-400"><i class="fa-solid fa-house"></i><span class="text-xs mt-1">Home</span></a>
-    <a class="flex flex-col items-center p-2 text-gray-400 hover:text-white"><i class="fa-solid fa-seedling"></i><span class="text-xs mt-1">Lessons</span></a>
-    <a class="flex flex-col items-center p-2 text-gray-400 hover:text-white"><i class="fa-solid fa-recycle"></i><span class="text-xs mt-1">Missions</span></a>
-    <a class="flex flex-col items-center p-2 text-gray-400 hover:text-white"><i class="fa-solid fa-user-circle"></i><span class="text-xs mt-1">Profile</span></a>
-  </nav>
-
-  <!-- TOAST CONTAINER -->
-  <div id="toastContainer" class="fixed bottom-5 right-5 space-y-2 z-50"></div>
-
-  <!-- CONFIRM MODAL (hidden by default) -->
-  <div id="confirmModal" class="hidden fixed inset-0 flex items-center justify-center z-60">
-    <div class="absolute inset-0 bg-black/60"></div>
-    <div class="modal-fade relative bg-[#0f172a] rounded-2xl p-6 w-80 border border-gray-700 transform scale-95 opacity-0">
-      <h3 id="confirmTitle" class="text-lg font-semibold text-white mb-2">Confirm</h3>
-      <p id="confirmMessage" class="text-gray-300 text-sm mb-4">Are you sure?</p>
-      <div class="flex justify-end gap-3">
-        <button id="confirmCancel" class="px-4 py-2 rounded-lg bg-gray-600 text-white">Cancel</button>
-        <button id="confirmOk" class="px-4 py-2 rounded-lg bg-green-600 text-white">Yes</button>
       </div>
     </div>
-  </div>
+  </main>
+
+  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
   <script>
-  /* Unified dashboard + profile sync + improved UI interactions */
-  (function () {
-    // ---------- keys & defaults ----------
-    const PROFILE_KEY = 'ecoquest_profile_v1';
-    const STATE_KEY = 'ecoquest_state_v1';
-
-    const defaultProfile = {
-      name: 'Eco Warrior',
-      tagline: 'Level 1',
-      avatar: 'https://via.placeholder.com/100'
+    let userState = {
+      xp: 265,
+      maxXp: 625,
+      level: 5
     };
 
-    const defaultState = {
-      xp: 180,
-      xpForLevel: 500,
-      level: 5,
-      progressPercent: 36,
-      streakDays: 3,
-      badges: { green: true, recycle: true, solar: true, locked: false },
-      recent: [
-        { title: 'Completed: Plastic-Free Week', type: 'Mission', when: '2 days ago' },
-        { title: 'Lesson: Carbon Footprints', type: 'Learning Module', when: '5 days ago' },
-        { title: 'Completed: Tree Plantation', type: 'Mission', when: '1 week ago' },
-      ]
-    };
+    // --- TOAST NOTIFICATIONS ---
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      
+      const colorClass = type === 'success' ? 'bg-green-600' : 'bg-blue-600';
+      const icon = type === 'success' ? 'fa-check-circle' : 'fa-info-circle';
 
-    // ---------- storage helpers ----------
-    function loadJSON(key, fallback) {
-      try {
-        const raw = localStorage.getItem(key);
-        return raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(fallback));
-      } catch (e) {
-        return JSON.parse(JSON.stringify(fallback));
+      toast.className = `toast ${colorClass} text-white px-6 py-3 rounded-xl shadow-2xl flex items-center gap-3 font-bold min-w-[200px]`;
+      toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${message}</span>`;
+      container.appendChild(toast);
+      requestAnimationFrame(() => toast.classList.add('show'));
+      // Remove after 3 seconds
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 400);
+      }, 3000);
+    }
+
+    function handleMission(btn, xpReward) {
+      if (btn.innerText.includes("Start")) {
+        // Change to "In Progress" state
+        btn.innerText = "Complete Mission";
+        btn.classList.remove("bg-gray-900");
+        btn.classList.add("bg-blue-600", "border-blue-500", "hover:bg-blue-500");
+        showToast("Mission Started! Good luck.", "info");
+      } 
+      else {
+        // Complete the mission
+        updateXP(xpReward);
+        btn.innerText = "Completed";
+        btn.disabled = true;
+        btn.classList.remove("bg-blue-600", "hover:bg-blue-500");
+        btn.classList.add("bg-gray-700", "text-gray-400", "border-transparent", "cursor-not-allowed");
+        showToast(`Mission Complete! +${xpReward} XP`);
       }
     }
-    function saveJSON(key, obj) {
-      localStorage.setItem(key, JSON.stringify(obj));
-    }
 
-    // ---------- profile sync ----------
-    let profile = loadJSON(PROFILE_KEY, defaultProfile);
-    let state = loadJSON(STATE_KEY, defaultState);
-
-    function applyProfileToUI() {
-      // navbar
-      const nav = document.getElementById('profile_avatar_nav');
-      if (nav) nav.src = profile.avatar;
-
-      // sidebar
-      const side = document.getElementById('profile_avatar_sidebar');
-      if (side) side.src = profile.avatar;
-
-      // right card
-      const cardPic = document.getElementById('profile_avatar_card');
-      if (cardPic) cardPic.src = profile.avatar;
-
-      const nameEl = document.getElementById('profile_card_name');
-      if (nameEl) nameEl.textContent = profile.name || 'Eco Warrior';
-
-      const tagEl = document.getElementById('profile_card_tag');
-      if (tagEl) tagEl.textContent = profile.tagline || 'Level 1';
-    }
-
-    // update state UI (xp / level / streak / badges)
-    function applyStateToUI() {
-      const xpLabel = document.getElementById('card_xp_label');
-      if (xpLabel) xpLabel.textContent = `XP: ${state.xp} / ${state.xpForLevel}`;
-
-      const levelLabel = document.getElementById('card_level_label');
-      if (levelLabel) levelLabel.textContent = `Level ${state.level}`;
-
-      const prog = document.getElementById('card_progress');
-      if (prog) prog.style.width = `${state.progressPercent}%`;
-
-      // streak
-      const streakTitle = document.getElementById('streak_title');
-      if (streakTitle) streakTitle.textContent = `${state.streakDays} Day Eco Streak!`;
-
-      const streakDesc = document.getElementById('streak_desc');
-      if (streakDesc) streakDesc.textContent = state.streakDays >= 7 ? 'Legendary streak — keep it up!' : 'Complete a mission tomorrow to keep your streak alive.';
-    }
-
-    // initial render
-    applyProfileToUI();
-    applyStateToUI();
-
-    // listen for profile changes in other tabs/windows (sync)
-    window.addEventListener('storage', (e) => {
-      if (e.key === PROFILE_KEY) {
-        profile = loadJSON(PROFILE_KEY, defaultProfile);
-        applyProfileToUI();
+    function updateXP(amount) {
+      userState.xp += amount;
+      
+      // Level Up Logic
+      if (userState.xp >= userState.maxXp) {
+        userState.xp = userState.xp - userState.maxXp;
+        userState.level++;
+        userState.maxXp += 150; // Harder next level
+        showToast(`Level Up! You are now Level ${userState.level}!`, "success");
+        
+        // Update Level Text
+        document.getElementById('currentLevel').innerText = userState.level;
+        document.getElementById('maxXP').innerText = userState.maxXp;
       }
-      if (e.key === STATE_KEY) {
-        state = loadJSON(STATE_KEY, defaultState);
-        applyStateToUI();
+
+      // Update UI
+      document.getElementById('currentXP').innerText = userState.xp;
+      
+      // Calculate percentage for bar
+      const percentage = (userState.xp / userState.maxXp) * 100;
+      document.getElementById('xpBar').style.width = `${percentage}%`;
+    }
+
+    // --- FUNCTIONALITY LESSONS ---
+    function continueLesson() {
+      const bar = document.getElementById('lessonProgressBar');
+      const text = document.getElementById('lessonProgressText');
+      
+      // Simulate progress increase
+      let currentWidth = parseInt(bar.style.width || 40);
+      if(currentWidth < 100) {
+        currentWidth += 20;
+        bar.style.width = `${currentWidth}%`;
+        text.innerText = `${currentWidth}% Complete`;
+        showToast("Progress Saved!");
+      } else {
+        showToast("Module Completed! +50 XP");
+        updateXP(50);
       }
+    }
+
+    // --- SEARCH ---
+    const searchInput = document.getElementById('searchInput');
+    const items = document.querySelectorAll('.searchable-item');
+
+    searchInput.addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase();
+      
+      items.forEach(item => {
+        const keywords = item.getAttribute('data-keywords');
+        if(keywords.includes(term)) {
+          item.style.display = "flex";
+        } else {
+          item.style.display = "none";
+        }
+      });
     });
 
-    // ---------- toast ----------
-    const toastContainer = document.getElementById('toastContainer');
-    function showToast(msg, opts = {}) {
-      const t = document.createElement('div');
-      t.className = 'px-4 py-2 rounded-lg shadow text-white';
-      t.style.background = opts.error ? '#dc2626' : '#16a34a';
-      t.style.opacity = '0';
-      t.textContent = msg;
-      toastContainer.appendChild(t);
-      requestAnimationFrame(() => t.style.opacity = '1');
-      setTimeout(() => {
-        t.style.opacity = '0';
-        setTimeout(() => t.remove(), 300);
-      }, opts.duration || 2000);
-    }
-
-    // ---------- confirm modal (promise-based) ----------
-    const confirmModal = document.getElementById('confirmModal');
-    const confirmTitle = document.getElementById('confirmTitle');
-    const confirmMessage = document.getElementById('confirmMessage');
-    const confirmOk = document.getElementById('confirmOk');
-    const confirmCancel = document.getElementById('confirmCancel');
-
-    function showConfirm(title, message) {
-      return new Promise((resolve) => {
-        confirmTitle.textContent = title || 'Confirm';
-        confirmMessage.textContent = message || 'Are you sure?';
-
-        // show
-        confirmModal.classList.remove('hidden');
-        const box = confirmModal.querySelector('.modal-fade');
-        // animate in
-        requestAnimationFrame(() => {
-          box.style.transform = 'scale(1)';
-          box.style.opacity = '1';
-        });
-
-        function cleanup(result) {
-          // animate out
-          box.style.transform = 'scale(.95)';
-          box.style.opacity = '0';
-          setTimeout(() => confirmModal.classList.add('hidden'), 180);
-          confirmOk.removeEventListener('click', okHandler);
-          confirmCancel.removeEventListener('click', cancelHandler);
-          resolve(result);
-        }
-        function okHandler() { cleanup(true); }
-        function cancelHandler() { cleanup(false); }
-
-        confirmOk.addEventListener('click', okHandler);
-        confirmCancel.addEventListener('click', cancelHandler);
-      });
-    }
-
-    // ---------- mission / continue handlers ----------
-    function bindButtons() {
-      // Start mission
-      document.querySelectorAll('.startMissionBtn').forEach(btn => {
-        btn.addEventListener('click', async (e) => {
-          const missionName = btn.getAttribute('data-mission') || 'Mission';
-          const ok = await showConfirm('Start Mission', `Start "${missionName}"? You will earn XP on completion.`);
-          if (!ok) {
-            showToast('Mission canceled', { duration: 1200 });
-            return;
-          }
-
-          // simulate completion flow (for demo)
-          const gained = 50;
-          state.xp += gained;
-          if (state.xp >= state.xpForLevel) {
-            state.xp = state.xp - state.xpForLevel;
-            state.level += 1;
-            state.xpForLevel = Math.round(state.xpForLevel * 1.25);
-            state.recent.unshift({ title: `Leveled up to ${state.level}!`, type: 'System', when: 'just now' });
-          } else {
-            state.recent.unshift({ title: `Completed: ${missionName}`, type: 'Mission', when: 'just now' });
-          }
-          state.progressPercent = Math.min(100, Math.round((state.xp / state.xpForLevel) * 100));
-          state.streakDays += 1;
-          if (state.streakDays >= 5) state.badges.locked = true;
-
-          saveJSON(STATE_KEY, state);
-          applyStateToUI();
-          renderRecentActivity();
-          showToast(`Mission Completed! +${gained} XP`);
-        });
-      });
-
-      // Continue lesson
-      document.querySelectorAll('.continueBtn').forEach(btn => {
-        btn.addEventListener('click', async () => {
-          const ok = await showConfirm('Open Lesson', 'Open lesson on "Understanding Carbon Footprints"?');
-          if (ok) {
-            // example navigation or placeholder
-            // location.href = 'lessons.html';
-            showToast('Opening lesson…');
-          } else {
-            showToast('Cancelled');
-          }
-        });
-      });
-
-      // notification bell
-      const bell = document.getElementById('bellBtn');
-      if (bell) bell.addEventListener('click', () => showToast('No new notifications — keep going!'));
-    }
-
-    bindButtons();
-
-    // ---------- recent activity rendering ----------
-    function renderRecentActivity() {
-      // find the Recent Activity section (by heading text "Recent Activity")
-      const sections = Array.from(document.querySelectorAll('main section'));
-      const recent = sections.find(s => s.textContent.includes('Recent Badges') || s.textContent.includes('Recent Activity'));
-      if (!recent) return;
-
-      // remove old list if exists
-      const old = recent.querySelector('.recent-list');
-      if (old) old.remove();
-
-      const wrap = document.createElement('div');
-      wrap.className = 'recent-list space-y-2 mt-2';
-
-      state.recent.slice(0, 6).forEach(item => {
-        const block = document.createElement('div');
-        block.className = 'bg-gray-800 p-3 rounded-xl border border-gray-700 flex items-center justify-between';
-        block.innerHTML = `<div><h4 class="font-semibold">${item.title}</h4><p class="text-gray-400 text-sm">${item.type} • ${item.when}</p></div><i class="fa-solid fa-check-circle text-green-400 text-2xl"></i>`;
-        wrap.appendChild(block);
-      });
-
-      recent.appendChild(wrap);
-    }
-
-    // initial render recent
-    renderRecentActivity();
-
-    // ---------- utility: refresh UI (exposed) ----------
-    function refreshAllUI() {
-      profile = loadJSON(PROFILE_KEY, defaultProfile);
-      state = loadJSON(STATE_KEY, defaultState);
-      applyProfileToUI();
-      applyStateToUI();
-      renderRecentActivity();
-    }
-
-    // expose for debugging
-    window.EcoQuest = { profile, state, refreshAllUI, saveJSON };
-
-    // animate modal box initial state
-    (function initModalBox() {
-      const box = document.querySelector('#confirmModal .modal-fade');
-      if (box) {
-        box.style.transform = 'scale(.95)';
-        box.style.opacity = '0';
-      }
-    })();
-
-    // run a refresh in case user updated profile in profile page
-    refreshAllUI();
-
-  })();
   </script>
-
 </body>
 </html>
