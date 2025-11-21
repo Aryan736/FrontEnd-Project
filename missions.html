@@ -3,33 +3,52 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EcoQuest • Green Missions</title>
+  <title>EcoQuest • Missions</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+  
   <style>
-    .mission-card-hover {
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: #111827;
     }
-    .mission-card-hover:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+
+    .ambient-glow {
+      position: absolute;
+      top: 0; left: 50%;
+      width: 100%; height: 600px;
+      background: radial-gradient(circle, rgba(74, 222, 128, 0.08) 0%, rgba(0,0,0,0) 70%);
+      transform: translateX(-50%);
+      pointer-events: none;
+      z-index: 0;
     }
-    .filter-btn-active {
-      background: linear-gradient(135deg, #16a34a 0%, #84cc16 100%);
-      color: white;
+
+    .mission-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid rgba(75, 85, 99, 0.4);
+    }
+    .mission-card:hover {
+      transform: translateY(-5px);
+      border-color: #4ade80;
+      box-shadow: 0 10px 30px -10px rgba(74, 222, 128, 0.15);
+    }
+
+    .filter-btn.active {
+      background-color: #4ade80;
+      color: #111827;
+      font-weight: 600;
     }
   </style>
 </head>
-
-<body class="bg-gray-900 text-gray-100 font-sans">
-
-  <!-- HEADER -->
+<body class="text-gray-100 min-h-screen flex flex-col relative">
+  <div class="ambient-glow"></div>
   <header class="h-16 flex items-center justify-between px-6 bg-gray-800 border-b border-gray-700">
     <div class="flex items-center gap-4">
 		<a href="index.html" class="text-gray-300 hover:text-green-400 hover:bg-gray-500/30 px-2 py-1 rounded-full">
 			<i class="fa-solid fa-arrow-left text-xl"></i>
 		</a>
-		<h2 class="text-2xl font-semibold">Green Mission</h2>
+		<h2 class="text-2xl font-semibold">Eco Missions</h2>
 	</div>
     <div class="flex items-center gap-4">
       <button class="text-gray-400 hover:text-white"><i class="fa-solid fa-bell"></i></button>
@@ -37,526 +56,209 @@
     </div>
   </header>
 
-  <!-- MAIN CONTENT -->
-  <main class="min-h-screen">
-    <div class="p-6 space-y-6">
-
-        <!-- Hero Section -->
-        <section class="bg-gradient-to-r from-green-600 to-lime-600 rounded-2xl p-8 text-white shadow-lg">
-          <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div class="flex-1">
-              <h1 class="text-3xl font-bold mb-2">Take Action for the Planet</h1>
-              <p class="text-green-50 text-lg">Complete missions, earn XP, and make a real difference in your community.</p>
-              <div class="mt-4 flex gap-4">
-                <div class="bg-white/20 backdrop-blur px-4 py-2 rounded-lg">
-                  <p class="text-sm">Missions Completed</p>
-                  <p class="text-2xl font-bold">12</p>
-                </div>
-                <div class="bg-white/20 backdrop-blur px-4 py-2 rounded-lg">
-                  <p class="text-sm">Total XP Earned</p>
-                  <p class="text-2xl font-bold">850</p>
-                </div>
-              </div>
-            </div>
-            <div class="text-8xl opacity-20">
-              <i class="fa-solid fa-earth-americas"></i>
-            </div>
-          </div>
-        </section>
-
-        <!-- Filter Tabs -->
-        <section>
-          <div class="flex flex-wrap gap-3">
-            <button class="filter-btn filter-btn-active px-5 py-2 rounded-lg bg-gray-800 text-gray-300 font-medium hover:bg-gray-700 transition" data-filter="all">
-              <i class="fa-solid fa-grip mr-2"></i>All Missions
-            </button>
-            <button class="filter-btn px-5 py-2 rounded-lg bg-gray-800 text-gray-300 font-medium hover:bg-gray-700 transition" data-filter="energy">
-              <i class="fa-solid fa-bolt mr-2"></i>Energy
-            </button>
-            <button class="filter-btn px-5 py-2 rounded-lg bg-gray-800 text-gray-300 font-medium hover:bg-gray-700 transition" data-filter="waste">
-              <i class="fa-solid fa-trash mr-2"></i>Waste
-            </button>
-            <button class="filter-btn px-5 py-2 rounded-lg bg-gray-800 text-gray-300 font-medium hover:bg-gray-700 transition" data-filter="nature">
-              <i class="fa-solid fa-tree mr-2"></i>Nature
-            </button>
-            <button class="filter-btn px-5 py-2 rounded-lg bg-gray-800 text-gray-300 font-medium hover:bg-gray-700 transition" data-filter="water">
-              <i class="fa-solid fa-droplet mr-2"></i>Water
-            </button>
-            <button class="filter-btn px-5 py-2 rounded-lg bg-gray-800 text-gray-300 font-medium hover:bg-gray-700 transition" data-filter="transport">
-              <i class="fa-solid fa-bicycle mr-2"></i>Transport
-            </button>
-          </div>
-        </section>
-
-        <!-- Missions Grid -->
-        <section>
-          <h3 class="text-xl font-semibold mb-4">Available Missions</h3>
-          <div id="missionsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          </div>
-        </section>
-
-      </div>
-    </main>
-  </div>
-  
-  <!-- Mission Detail Modal -->
-  <div id="missionModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-    <div class="bg-gray-800 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-gray-700">
-      <div class="p-6">
-        <div class="flex justify-between items-start mb-4">
-          <div class="flex items-center gap-4">
-            <div id="modalIcon" class="w-16 h-16 rounded-xl bg-gradient-to-br from-green-600 to-lime-600 flex items-center justify-center text-3xl">
-              <i class="fa-solid fa-tree"></i>
-            </div>
-            <div>
-              <span id="modalCategory" class="text-sm font-medium text-green-400">Nature</span>
-              <h3 id="modalTitle" class="text-2xl font-bold">Mission Title</h3>
-            </div>
-          </div>
-          <button id="closeModal" class="text-gray-400 hover:text-white text-2xl">
-            <i class="fa-solid fa-times"></i>
-          </button>
-        </div>
-
-        <div class="space-y-4">
-          <div>
-            <h4 class="font-semibold text-lg mb-2">Description</h4>
-            <p id="modalDescription" class="text-gray-300 leading-relaxed">Mission description goes here.</p>
-          </div>
-
-          <div class="flex gap-4">
-            <div class="flex-1 bg-gray-900 rounded-lg p-4">
-              <p class="text-gray-400 text-sm">XP Reward</p>
-              <p id="modalXP" class="text-2xl font-bold text-green-400">50 XP</p>
-            </div>
-            <div class="flex-1 bg-gray-900 rounded-lg p-4">
-              <p class="text-gray-400 text-sm">Duration</p>
-              <p id="modalDuration" class="text-2xl font-bold text-yellow-400">1 Week</p>
-            </div>
-            <div class="flex-1 bg-gray-900 rounded-lg p-4">
-              <p class="text-gray-400 text-sm">Difficulty</p>
-              <p id="modalDifficulty" class="text-2xl font-bold text-blue-400">Easy</p>
-            </div>
-          </div>
-
-          <div>
-            <h4 class="font-semibold text-lg mb-2">Steps to Complete</h4>
-            <ul id="modalSteps" class="space-y-2">
-              <!-- Steps will be injected here -->
-            </ul>
-          </div>
-
-          <div>
-            <h4 class="font-semibold text-lg mb-2">Impact</h4>
-            <div id="modalImpact" class="bg-green-900/30 border border-green-700 rounded-lg p-4 text-green-300">
-              Impact description goes here.
-            </div>
-          </div>
-
-          <button id="startMissionBtn" class="w-full py-4 bg-gradient-to-r from-green-600 to-lime-600 rounded-xl font-bold text-lg hover:from-green-500 hover:to-lime-500 transition">
-            Start Mission <i class="fa-solid fa-rocket ml-2"></i>
-          </button>
-        </div>
-      </div>
+  <main class="max-w-6xl w-full mx-auto p-8 relative z-10">
+    <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-light mb-4">Choose Your <span class="text-green-400 font-semibold">Impact</span></h2>
+        <p class="text-gray-400 max-w-xl mx-auto">Select a mission to start earning XP. Small actions today lead to a greener tomorrow.</p>
     </div>
-  </div>
-
-  <!-- Toast Container -->
-  <div id="toastContainer" class="fixed bottom-20 sm:bottom-5 right-5 space-y-2 z-50"></div>
+    <div class="flex flex-wrap justify-center gap-3 mb-12" id="filterContainer">
+        <button onclick="filterMissions('all')" class="filter-btn active px-6 py-2 rounded-full border border-gray-700 hover:border-green-500 transition-all text-sm">All</button>
+        <button onclick="filterMissions('energy')" class="filter-btn px-6 py-2 rounded-full border border-gray-700 hover:border-green-500 transition-all text-sm">Energy</button>
+        <button onclick="filterMissions('waste')" class="filter-btn px-6 py-2 rounded-full border border-gray-700 hover:border-green-500 transition-all text-sm">Waste</button>
+        <button onclick="filterMissions('nature')" class="filter-btn px-6 py-2 rounded-full border border-gray-700 hover:border-green-500 transition-all text-sm">Nature</button>
+    </div>
+    <div id="missionsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  </main>
 
   <script>
-  (() => {
-    const PROFILE_KEY = 'ecoquest_profile_v1';
-
-    const defaultProfile = {
-      name: 'Eco Warrior',
-      avatar: 'https://via.placeholder.com/100'
-    };
-
-    function loadProfile() {
-      try {
-        const raw = localStorage.getItem(PROFILE_KEY);
-        return raw ? JSON.parse(raw) : { ...defaultProfile };
-      } catch {
-        return { ...defaultProfile };
-      }
-    }
-
-    const profile = loadProfile();
-    
-    // Apply profile avatar
-    const navAvatar = document.getElementById('profile_avatar_nav');
-    if (navAvatar) navAvatar.src = profile.avatar;
-
-    // Mission data
     const missions = [
-      {
-        id: 1,
-        title: 'Plant a Sapling',
-        category: 'nature',
-        icon: 'fa-tree',
-        iconColor: 'from-green-600 to-lime-600',
-        description: 'Contribute to a greener planet by planting and nurturing a tree sapling in your community or backyard.',
-        xp: 75,
-        duration: '1 Week',
-        difficulty: 'Easy',
-        steps: [
-          'Choose a suitable location with adequate sunlight',
-          'Select a native tree species appropriate for your climate',
-          'Dig a hole twice the width of the root ball',
-          'Plant the sapling and water thoroughly',
-          'Take a photo and document your progress'
-        ],
-        impact: 'A single tree can absorb up to 48 pounds of CO₂ per year and produce enough oxygen for 2 people.'
-      },
-      {
-        id: 2,
-        title: 'Plastic-Free Week',
-        category: 'waste',
-        icon: 'fa-bottle-water',
-        iconColor: 'from-blue-600 to-cyan-600',
-        description: 'Challenge yourself to avoid all single-use plastics for 7 consecutive days. Discover alternatives and reduce your waste footprint.',
-        xp: 100,
-        duration: '7 Days',
-        difficulty: 'Medium',
-        steps: [
-          'Identify single-use plastics in your daily routine',
-          'Find reusable alternatives (bags, bottles, containers)',
-          'Shop at bulk stores or farmers markets',
-          'Track your plastic consumption daily',
-          'Share your journey on social media with #PlasticFreeWeek'
-        ],
-        impact: 'By avoiding plastic for one week, you prevent approximately 50 plastic items from entering landfills or oceans.'
-      },
-      {
-        id: 3,
-        title: 'Energy Audit Challenge',
-        category: 'energy',
-        icon: 'fa-bolt',
-        iconColor: 'from-yellow-600 to-orange-600',
-        description: 'Conduct a complete energy audit of your home and implement at least 3 energy-saving measures.',
-        xp: 120,
-        duration: '2 Weeks',
-        difficulty: 'Medium',
-        steps: [
-          'Document current energy usage from utility bills',
-          'Check for air leaks around windows and doors',
-          'Audit lighting and switch to LED bulbs',
-          'Assess appliance efficiency',
-          'Implement 3 energy-saving improvements',
-          'Compare energy usage after 2 weeks'
-        ],
-        impact: 'Simple home energy improvements can reduce your carbon footprint by 20-30% and save hundreds on utility bills annually.'
-      },
-      {
-        id: 4,
-        title: 'Community Clean-Up',
-        category: 'waste',
-        icon: 'fa-broom',
-        iconColor: 'from-purple-600 to-pink-600',
-        description: 'Organize or join a local clean-up event to remove litter from parks, beaches, or neighborhoods.',
-        xp: 90,
-        duration: '1 Day',
-        difficulty: 'Easy',
-        steps: [
-          'Find or organize a local clean-up event',
-          'Gather supplies (gloves, bags, grabbers)',
-          'Recruit at least 2 friends to join',
-          'Spend minimum 2 hours collecting litter',
-          'Document the amount of waste collected',
-          'Properly dispose or recycle collected materials'
-        ],
-        impact: 'Community clean-ups prevent pollution, protect wildlife, and inspire others to take environmental action.'
-      },
-      {
-        id: 5,
-        title: 'Water Conservation Week',
-        category: 'water',
-        icon: 'fa-droplet',
-        iconColor: 'from-cyan-600 to-blue-600',
-        description: 'Reduce your household water consumption by 30% through conscious conservation practices.',
-        xp: 85,
-        duration: '1 Week',
-        difficulty: 'Easy',
-        steps: [
-          'Install low-flow showerheads',
-          'Fix any leaking faucets',
-          'Take 5-minute showers instead of baths',
-          'Turn off tap while brushing teeth',
-          'Collect and reuse greywater for plants',
-          'Track daily water usage'
-        ],
-        impact: 'Saving 30% water consumption preserves precious freshwater resources and reduces the energy needed for water treatment.'
-      },
-      {
-        id: 6,
-        title: 'Bike-to-Work Month',
-        category: 'transport',
-        icon: 'fa-bicycle',
-        iconColor: 'from-green-600 to-teal-600',
-        description: 'Replace car trips with cycling for at least 15 days within a month. Reduce emissions and improve your health.',
-        xp: 150,
-        duration: '1 Month',
-        difficulty: 'Hard',
-        steps: [
-          'Plan safe cycling routes to work/school',
-          'Ensure your bike is in good condition',
-          'Get necessary safety gear (helmet, lights)',
-          'Start with 3 days per week, increase gradually',
-          'Log each cycling trip with distance',
-          'Achieve minimum 15 cycling days in the month'
-        ],
-        impact: 'Cycling instead of driving for one month can save approximately 250 lbs of CO₂ emissions and burn 3000+ calories.'
-      },
-      {
-        id: 7,
-        title: 'Meatless Monday Month',
-        category: 'waste',
-        icon: 'fa-leaf',
-        iconColor: 'from-lime-600 to-green-600',
-        description: 'Commit to plant-based meals every Monday for an entire month and explore delicious vegetarian recipes.',
-        xp: 95,
-        duration: '1 Month',
-        difficulty: 'Easy',
-        steps: [
-          'Research plant-based recipes',
-          'Plan Monday menus in advance',
-          'Shop for fresh vegetables and legumes',
-          'Try at least 4 different recipes',
-          'Document your favorite dishes',
-          'Share recipes with friends'
-        ],
-        impact: 'Going meatless one day per week for a year saves the same emissions as driving 1,160 miles in a car.'
-      },
-      {
-        id: 8,
-        title: 'Solar Panel Research',
-        category: 'energy',
-        icon: 'fa-solar-panel',
-        iconColor: 'from-orange-600 to-yellow-600',
-        description: 'Research and create a detailed plan for implementing solar energy at your home or workplace.',
-        xp: 110,
-        duration: '2 Weeks',
-        difficulty: 'Medium',
-        steps: [
-          'Calculate your current energy consumption',
-          'Research local solar installers',
-          'Get at least 3 solar installation quotes',
-          'Calculate ROI and payback period',
-          'Research available incentives and rebates',
-          'Create a comprehensive solar implementation plan'
-        ],
-        impact: 'Solar panels can reduce your carbon footprint by 80% and provide clean energy for 25+ years.'
-      },
-      {
-        id: 9,
-        title: 'Zero Waste Shopping',
-        category: 'waste',
-        icon: 'fa-shopping-bag',
-        iconColor: 'from-green-600 to-emerald-600',
-        description: 'Complete all grocery shopping for 2 weeks using zero-waste principles and reusable containers.',
-        xp: 105,
-        duration: '2 Weeks',
-        difficulty: 'Medium',
-        steps: [
-          'Locate bulk stores and farmers markets',
-          'Prepare reusable bags, jars, and containers',
-          'Make a shopping list to avoid impulse buys',
-          'Buy loose produce without plastic packaging',
-          'Choose products with minimal packaging',
-          'Document packaging waste saved'
-        ],
-        impact: 'Zero-waste shopping can reduce household waste by up to 80% and save money on packaged goods.'
-      },
-      {
-        id: 10,
-        title: 'Wildlife Habitat Creation',
-        category: 'nature',
-        icon: 'fa-bird',
-        iconColor: 'from-blue-600 to-indigo-600',
-        description: 'Build and install a birdhouse or bee hotel to provide habitat for local wildlife.',
-        xp: 80,
-        duration: '1 Week',
-        difficulty: 'Easy',
-        steps: [
-          'Research native birds or pollinators in your area',
-          'Design appropriate housing structure',
-          'Gather materials (wood, bamboo, or recycled)',
-          'Build and weatherproof the structure',
-          'Install in suitable location',
-          'Monitor for wildlife activity'
-        ],
-        impact: 'Providing wildlife habitat supports biodiversity and helps pollinator populations that are essential for food production.'
-      },
-      {
-        id: 11,
-        title: 'Rainwater Harvesting',
-        category: 'water',
-        icon: 'fa-cloud-rain',
-        iconColor: 'from-blue-600 to-cyan-600',
-        description: 'Set up a rainwater collection system to harvest and use rainwater for gardening or outdoor use.',
-        xp: 130,
-        duration: '1 Week',
-        difficulty: 'Hard',
-        steps: [
-          'Calculate roof area and potential collection',
-          'Purchase or build rain barrels',
-          'Install gutter system if needed',
-          'Set up filtration for debris',
-          'Connect overflow management',
-          'Use collected water for plants'
-        ],
-        impact: 'Rainwater harvesting can reduce municipal water use by 40% and prevent stormwater runoff pollution.'
-      },
-      {
-        id: 12,
-        title: 'Composting Champion',
-        category: 'waste',
-        icon: 'fa-recycle',
-        iconColor: 'from-green-600 to-lime-600',
-        description: 'Start a composting system and divert all organic waste from landfills for one month.',
-        xp: 90,
-        duration: '1 Month',
-        difficulty: 'Easy',
-        steps: [
-          'Choose composting method (bin, tumbler, or pile)',
-          'Set up composting system',
-          'Learn what can and cannot be composted',
-          'Collect kitchen scraps and yard waste',
-          'Maintain proper moisture and aeration',
-          'Track waste diverted from trash'
-        ],
-        impact: 'Composting diverts 30% of household waste from landfills and creates nutrient-rich soil for gardens.'
-      }
-    ];
+    { 
+      id: 1, 
+      title: 'Plant a Sapling', 
+      category: 'nature', 
+      xp: 75, 
+      desc: 'Plant a native tree in your garden or community.',
+      icon: 'fa-tree' 
+    },
+    { 
+      id: 2, 
+      title: 'Plastic-Free Week', 
+      category: 'waste', 
+      xp: 100, 
+      desc: 'Avoid single-use plastics for 7 straight days.',
+      icon: 'fa-bottle-water' 
+    },
+    { 
+      id: 3, 
+      title: 'Switch to LED', 
+      category: 'energy', 
+      xp: 50, 
+      desc: 'Replace 3 old bulbs with energy-efficient LEDs.',
+      icon: 'fa-lightbulb' 
+    },
+    { 
+      id: 4, 
+      title: 'Community Cleanup', 
+      category: 'waste', 
+      xp: 150, 
+      desc: 'Spend 1 hour picking up litter in your local park.',
+      icon: 'fa-trash-can' 
+    },
+    { 
+      id: 5, 
+      title: 'Bike to Class', 
+      category: 'energy', 
+      xp: 80, 
+      desc: 'Skip the car/bus and cycle to your destination.',
+      icon: 'fa-bicycle' 
+    },
+    { 
+      id: 6, 
+      title: 'Meatless Monday', 
+      category: 'nature', 
+      xp: 60, 
+      desc: 'Go vegetarian for one full day to reduce carbon footprint.',
+      icon: 'fa-carrot' 
+    },
+    { 
+      id: 7, 
+      title: 'Unplug Vampire Power', 
+      category: 'energy', 
+      xp: 40, 
+      desc: 'Unplug electronics not in use for a whole night.',
+      icon: 'fa-plug' 
+    },
+    { 
+      id: 8, 
+      title: 'Thrift Store Find', 
+      category: 'waste', 
+      xp: 90, 
+      desc: 'Buy a clothing item second-hand instead of new.',
+      icon: 'fa-shirt' 
+    },
+    { 
+      id: 9, 
+      title: 'Cold Wash Hero', 
+      category: 'energy', 
+      xp: 55, 
+      desc: 'Do your laundry using only cold water cycles.',
+      icon: 'fa-snowflake' 
+    },
+    { 
+      id: 10, 
+      title: 'Bird Feeder', 
+      category: 'nature', 
+      xp: 70, 
+      desc: 'Set up a bird feeder to support local wildlife.',
+      icon: 'fa-dove' 
+    },
+    { 
+      id: 11, 
+      title: 'Reusable Cup', 
+      category: 'waste', 
+      xp: 30, 
+      desc: 'Bring your own cup to the coffee shop.',
+      icon: 'fa-mug-hot' 
+    },
+    { 
+      id: 12, 
+      title: 'Short Shower', 
+      category: 'energy', 
+      xp: 45, 
+      desc: 'Limit your shower to under 5 minutes.',
+      icon: 'fa-shower' 
+    },
+    { 
+      id: 13, 
+      title: 'E-Waste Recycle', 
+      category: 'waste', 
+      xp: 120, 
+      desc: 'Properly recycle old batteries or electronics.',
+      icon: 'fa-battery-full' 
+    },
+    { 
+      id: 14, 
+      title: 'Grow an Herb', 
+      category: 'nature', 
+      xp: 65, 
+      desc: 'Plant and grow a kitchen herb like basil or mint.',
+      icon: 'fa-seedling' 
+    },
+    { 
+      id: 15, 
+      title: 'Paperless Bill', 
+      category: 'waste', 
+      xp: 35, 
+      desc: 'Switch one of your monthly bills to digital-only.',
+      icon: 'fa-file-invoice' 
+    }
+  ];
 
-    let currentFilter = 'all';
-    let selectedMission = null;
+    const grid = document.getElementById('missionsGrid');
+    const buttons = document.querySelectorAll('.filter-btn');
 
-    // Render missions
-    function renderMissions() {
-      const grid = document.getElementById('missionsGrid');
+    // --- Render Function ---
+    function renderMissions(filter = 'all') {
       grid.innerHTML = '';
-
-      const filtered = currentFilter === 'all' 
+      
+      const filtered = filter === 'all' 
         ? missions 
-        : missions.filter(m => m.category === currentFilter);
+        : missions.filter(m => m.category === filter);
 
-      filtered.forEach(mission => {
-        const card = document.createElement('div');
-        card.className = 'mission-card-hover bg-gray-800 rounded-2xl p-6 border border-gray-700 cursor-pointer';
-        card.setAttribute('data-mission-id', mission.id);
+      if(filtered.length === 0) {
+        grid.innerHTML = '<p class="text-gray-500 col-span-full text-center">No missions found.</p>';
+        return;
+      }
 
-        card.innerHTML = `
-          <div class="w-14 h-14 rounded-xl bg-gradient-to-br ${mission.iconColor} flex items-center justify-center text-2xl mb-4">
-            <i class="fa-solid ${mission.icon}"></i>
-          </div>
-          <span class="text-sm font-medium text-green-400 capitalize">${mission.category}</span>
-          <h4 class="text-xl font-bold my-2">${mission.title}</h4>
-          <p class="text-gray-400 text-sm mb-4 line-clamp-2">${mission.description}</p>
-          
-          <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-700">
-            <div class="flex items-center gap-3">
-              <span class="text-sm text-gray-400">
-                <i class="fa-solid fa-star text-yellow-400 mr-1"></i>${mission.xp} XP
-              </span>
-              <span class="text-sm text-gray-400">
-                <i class="fa-solid fa-clock mr-1"></i>${mission.duration}
-              </span>
+      filtered.forEach(m => {
+        const card = `
+          <div class="mission-card bg-gray-800/40 backdrop-blur rounded-2xl p-6 relative group">
+            
+            <div class="flex justify-between items-start mb-4">
+                <div class="w-12 h-12 rounded-xl bg-gray-700 flex items-center justify-center text-green-400 text-xl group-hover:bg-green-500 group-hover:text-white transition-colors">
+                    <i class="fa-solid ${m.icon}"></i>
+                </div>
+                <span class="text-xs font-bold text-gray-500 border border-gray-700 px-2 py-1 rounded uppercase tracking-wider">${m.category}</span>
             </div>
-            <span class="px-3 py-1 rounded-full text-xs font-medium ${
-              mission.difficulty === 'Easy' ? 'bg-green-900/50 text-green-400' :
-              mission.difficulty === 'Medium' ? 'bg-yellow-900/50 text-yellow-400' :
-              'bg-red-900/50 text-red-400'
-            }">${mission.difficulty}</span>
+
+            <h3 class="text-xl font-bold text-gray-100 mb-2">${m.title}</h3>
+            <p class="text-sm text-gray-400 mb-6 leading-relaxed">${m.desc}</p>
+
+            <div class="flex items-center justify-between border-t border-gray-700 pt-4">
+                <span class="text-yellow-500 font-bold text-sm"><i class="fa-solid fa-bolt mr-1"></i> ${m.xp} XP</span>
+                <button onclick="acceptMission(this)" class="text-sm font-semibold text-green-400 hover:text-green-300 transition-colors">
+                    Start Mission &rarr;
+                </button>
+            </div>
           </div>
         `;
-
-        card.addEventListener('click', () => openMissionModal(mission));
-        grid.appendChild(card);
+        grid.innerHTML += card;
       });
-
-      if (filtered.length === 0) {
-        grid.innerHTML = '<div class="col-span-full text-center py-12 text-gray-400">No missions found in this category.</div>';
-      }
     }
 
-    // Filter buttons
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('filter-btn-active'));
-        btn.classList.add('filter-btn-active');
-        currentFilter = btn.getAttribute('data-filter');
-        renderMissions();
+    // --- Filter Logic ---
+    function filterMissions(category) {
+      // Update UI Buttons
+      buttons.forEach(btn => {
+        if(btn.innerText.toLowerCase() === category || (category === 'all' && btn.innerText === 'All')) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
       });
-    });
-
-    // Modal functions
-    function openMissionModal(mission) {
-      selectedMission = mission;
-      const modal = document.getElementById('missionModal');
-      
-      document.getElementById('modalIcon').innerHTML = `<i class="fa-solid ${mission.icon}"></i>`;
-      document.getElementById('modalIcon').className = `w-16 h-16 rounded-xl bg-gradient-to-br ${mission.iconColor} flex items-center justify-center text-3xl`;
-      document.getElementById('modalCategory').textContent = mission.category.charAt(0).toUpperCase() + mission.category.slice(1);
-      document.getElementById('modalTitle').textContent = mission.title;
-      document.getElementById('modalDescription').textContent = mission.description;
-      document.getElementById('modalXP').textContent = `${mission.xp} XP`;
-      document.getElementById('modalDuration').textContent = mission.duration;
-      document.getElementById('modalDifficulty').textContent = mission.difficulty;
-      document.getElementById('modalImpact').textContent = mission.impact;
-
-      const stepsList = document.getElementById('modalSteps');
-      stepsList.innerHTML = mission.steps.map((step, i) => `
-        <li class="flex items-start gap-3 text-gray-300">
-          <span class="flex-shrink-0 w-6 h-6 rounded-full bg-green-600 flex items-center justify-center text-sm font-bold">${i + 1}</span>
-          <span>${step}</span>
-        </li>
-      `).join('');
-
-      modal.classList.remove('hidden');
+      renderMissions(category);
     }
 
-    function closeMissionModal() {
-      document.getElementById('missionModal').classList.add('hidden');
-      selectedMission = null;
+    // --- Interaction Logic ---
+    function acceptMission(btn) {
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> Active';
+        btn.classList.remove('text-green-400');
+        btn.classList.add('text-gray-400', 'cursor-default');
+        btn.removeAttribute('onclick');
+        const card = btn.closest('.mission-card');
+        card.style.borderColor = '#4ade80';
     }
-
-    document.getElementById('closeModal').addEventListener('click', closeMissionModal);
-    document.getElementById('missionModal').addEventListener('click', (e) => {
-      if (e.target.id === 'missionModal') closeMissionModal();
-    });
-
-    // Start mission button
-    document.getElementById('startMissionBtn').addEventListener('click', () => {
-      if (selectedMission) {
-        showToast(`Mission "${selectedMission.title}" started! Good luck!`);
-        closeMissionModal();
-      }
-    });
-
-    // Toast function
-    function showToast(msg) {
-      const container = document.getElementById('toastContainer');
-      const toast = document.createElement('div');
-      toast.className = 'bg-green-600 text-white px-4 py-3 rounded-lg shadow-lg';
-      toast.textContent = msg;
-      toast.style.opacity = '0';
-      toast.style.transition = 'opacity .3s';
-      
-      container.appendChild(toast);
-      setTimeout(() => toast.style.opacity = '1', 20);
-      setTimeout(() => {
-        toast.style.opacity = '0';
-        setTimeout(() => toast.remove(), 300);
-      }, 3000);
-    }
-
-    // Initial render
     renderMissions();
-
-  })();
   </script>
-
 </body>
 </html>
