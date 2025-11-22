@@ -17,11 +17,18 @@ This frontend-only prototype implements a gamified learning experience with:
 
 /
 ├─ index.html
+
 ├─ landing.html
+
 ├─ login.html
+
+
 ├─ missions.html
+
 ├─ ecolessons.html
+
 ├─ leaderboard.html
+
 └─ profilePage.html
 
 - **index.html**: Main entry page or home.  
